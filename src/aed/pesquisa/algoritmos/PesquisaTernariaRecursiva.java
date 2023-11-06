@@ -15,11 +15,11 @@ public class PesquisaTernariaRecursiva<T> extends AlgoritmoPesquisa<T> {
         return pesquisarRecursivo(elemento, 0, elementos.length - 1, elementos);
     }
 
-    private int pesquisarRecursivo(T elemento, int ESQ, int DIR, T... elementos){
-        if(DIR < ESQ)
+    private int pesquisarRecursivo(T elemento, int esq, int dir, T... elementos){
+        if(dir < esq)
             return NAO_ENCONTRADO;
 
-        int terco = (DIR-ESQ)/3;
+        int terco = (dir-esq)/3;
         int t1 = terco;
 
         //comparar elemento com t1
@@ -27,7 +27,7 @@ public class PesquisaTernariaRecursiva<T> extends AlgoritmoPesquisa<T> {
 
         //elemento é menor que t1
         if(comp < 0)
-            return pesquisarRecursivo(elemento,ESQ,t1-1,elementos);
+            return pesquisarRecursivo(elemento,esq,t1-1,elementos);
 
         //elemento é maior que t1
         if(comp > 0){
@@ -40,9 +40,9 @@ public class PesquisaTernariaRecursiva<T> extends AlgoritmoPesquisa<T> {
 
             //elemento maior que t2
             if(comp > 0)
-                return pesquisarRecursivo(elemento,t2+1,DIR,elementos);
-            return t2;
+                return pesquisarRecursivo(elemento,t2+1,dir,elementos);
+            return t2;//por exceção o elemento é igual ao t2
         }
-        return t1;
+        return t1;//por exceção o elemento é igual ao t1
     }
 }
