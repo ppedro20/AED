@@ -8,6 +8,7 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
 
     private No base;
     private int numElems;
+
     public ListaDuplaNaoOrdenada() {
         base = new No();
         numElems = 0;
@@ -25,22 +26,40 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
 
     @Override
     public T remover(T elem) {
-        return null;
+        return numElems == 0 ? null : removerNo(getNo(elem));
+    }
+
+    private No getNo(T elem) {
+        No cor = base.seguinte;
+        while (cor != base && !cor.elemento.equals(elem)) {
+            cor = cor.seguinte;
+        }
+        return cor;
     }
 
     @Override
     public T removerPorReferencia(T elem) {
-        return null;
+        No no = getNoPorReferencia(elem);
+        return no == base ? null : removerNo(no);
+    }
+
+    private No getNoPorReferencia(T elem) {
+        No cor = base.seguinte;
+        while (cor != base && cor.elemento != elem) {
+            cor = cor.seguinte;
+        }
+        return cor;
     }
 
     @Override
     public T removerPorIndice(int indice) {
-        return null;
+        return removerNo(getNoPorIndice(indice));
     }
 
     @Override
     public T consultarPorIndice(int indice) {
         return null;
+
     }
 
     @Override
@@ -55,28 +74,60 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
 
     @Override
     public void inserirNoInicio(T elem) {
-
+        new No(elem, base.seguinte);
+        numElems++;
     }
 
     @Override
     public void inserirNoFim(T elem) {
-        new No(elem,base);
+        new No(elem, base);
         numElems++;
     }
 
     @Override
     public void inserirPorIndice(int indice, T elem) {
+        new No(elem, getNoPorIndice(indice));
+        numElems++;
 
+    }
+
+    private No getNoPorIndice(int indice) {
+        if (indice < 0 || indice >= numElems) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        No cor;
+        if (indice < numElems / 2) {
+            cor = base.seguinte;
+            while (indice-- > 0) {
+                cor = cor.seguinte;
+            }
+        } else {
+            cor = base.anterior;
+            while (++indice < numElems) {
+                cor = cor.anterior;
+            }
+        }
+
+        return cor;
+    }
+
+    public T removerNo(No no) {
+        no.seguinte.anterior = no.seguinte;
+        no.anterior.seguinte = no.anterior;
+        numElems--;
+
+        return no.elemento;
     }
 
     @Override
     public T removerDoInicio() {
-        return null;
+        return numElems == 0 ? null : removerNo(base.seguinte);
     }
 
     @Override
     public T removerDoFim() {
-        return null;
+        return numElems == 0 ? null : removerNo(base.anterior);
     }
 
     public class No {
@@ -91,7 +142,7 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
         }
 
         // inserir elemento ELEM antes do no SEG
-        public No(T elem, No seg){
+        public No(T elem, No seg) {
             elemento = elem;                            //2
             anterior = seg.anterior;                    //3
             seguinte = seg;                             //4

@@ -36,11 +36,11 @@ public class MainPraticaListaDuplaNaoOrdenada {
 //            System.out.println(iterador.recuar());
 //        }
 //
-//        System.out.println("A remover elementos");
-//        lista.removerDoInicio();
-//        lista.removerDoFim();
-//        lista.removerPorIndice(1);
-//        lista.removerPorReferencia(lista.consultarPorIndice(1));
+        System.out.println("A remover elementos");
+        lista.removerDoInicio();
+        lista.removerDoFim();
+        lista.removerPorIndice(1);
+        lista.removerPorReferencia(lista.consultarPorIndice(1));
 //
 //
 //        System.out.println("\nApós remoção de elementos");
