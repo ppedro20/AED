@@ -1,7 +1,10 @@
 package aed.colecoes.iteraveis.lineares.naoordenadas.estruturas;
 
 import aed.colecoes.iteraveis.IteradorIteravel;
+import aed.colecoes.iteraveis.IteradorIteravelDuplo;
 import aed.colecoes.iteraveis.lineares.naoordenadas.ColecaoIteravelLinearNaoOrdenada;
+
+import java.util.NoSuchElementException;
 
 
 public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenada<T> {
@@ -15,8 +18,8 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
     }
 
     @Override
-    public IteradorIteravel<T> iterador() {
-        return null;
+    public IteradorIteravelDuplo<T> iterador() {
+        return new Iterador();
     }
 
     @Override
@@ -149,5 +152,63 @@ public class ListaDuplaNaoOrdenada<T> implements ColecaoIteravelLinearNaoOrdenad
             seg.anterior = anterior.seguinte = this;    //5 & 6
         }
 
+    }
+
+    private class Iterador implements IteradorIteravelDuplo<T> {
+
+        private No corrente;
+
+        public Iterador() {
+
+        }
+
+        @Override
+        public void reiniciar() {
+            corrente.anterior = base.anterior;
+            corrente.seguinte = base;
+            corrente = null;
+        }
+
+        @Override
+        public T corrente() {
+            if (corrente == null) {
+                throw new NoSuchElementException();
+            }
+            return corrente.elemento;
+        }
+
+        @Override
+        public boolean podeAvancar() {
+            return corrente.seguinte != null;
+        }
+
+        @Override
+        public T avancar() {
+            if (!podeAvancar()) {
+                throw new NoSuchElementException();
+            }
+
+            corrente.anterior = corrente;
+            corrente = corrente.seguinte;
+            corrente.seguinte = corrente.seguinte.seguinte;
+            return corrente.elemento;
+        }
+
+        @Override
+        public boolean podeRecuar() {
+            return corrente.anterior != null;
+        }
+
+        @Override
+        public T recuar() {
+            if (!podeAvancar()) {
+                throw new NoSuchElementException();
+            }
+
+            corrente.seguinte = corrente;
+            corrente = corrente.anterior;
+            corrente.anterior = corrente.anterior.anterior;
+            return corrente.elemento;
+        }
     }
 }
